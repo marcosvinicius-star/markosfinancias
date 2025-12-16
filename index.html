@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="FinanceFlow - Controle completo de suas finanças pessoais">
+    <meta name="theme-color" content="#0f172a">
+    <title>FinanceFlow - Controle de Gastos</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="FinanceFlow">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <!-- Tela de Login -->
+    <div id="login-wrapper" class="login-wrapper">
+        <div class="login-box" role="dialog" aria-labelledby="login-title">
+            <h1 id="login-title" class="sr-only">Login FinanceFlow</h1>
+            <h2>FinanceFlow</h2>
+            <p class="subtitle">
+                Controle suas finanças de forma inteligente<br>
+                <span style="font-size: 13px; color: var(--text-tertiary); margin-top: 8px; display: block;">
+                    Na primeira vez, escolha um nome de usuário e senha para criar sua conta automaticamente.
+                </span>
+            </p>
+            
+            <form id="login-form" aria-label="Formulário de login">
+                <div class="form-group">
+                    <label for="login-name">Nome de usuário</label>
+                    <input 
+                        type="text" 
+                        id="login-name" 
+                        class="form-input" 
+                        placeholder="Digite seu nome"
+                        required
+                        autocomplete="username"
+                        aria-required="true"
+                    >
+                </div>
+                
+                <div class="form-group">
+                    <label for="login-pass">Senha</label>
+                    <input 
+                        type="password" 
+                        id="login-pass" 
+                        class="form-input" 
+                        placeholder="Digite sua senha"
+                        required
+                        autocomplete="current-password"
+                        aria-required="true"
+                    >
+                </div>
+                
+                <button type="submit" class="btn-primary" id="login-submit-btn">
+                    <span>Entrar</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Aplicação Principal -->
+    <div id="app-wrapper" class="app-wrapper" style="display:none" aria-hidden="true">
+        <!-- Overlay para menu mobile -->
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+        
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar" role="complementary">
+            <div class="sidebar-content">
+                <div class="sidebar-header">
+                    <div class="sidebar-brand">FinanceFlow</div>
+                    <button 
+                        class="sidebar-close" 
+                        id="sidebar-close"
+                        aria-label="Fechar menu"
+                        title="Fechar menu"
+                    >
+                        ✕
+                    </button>
+                </div>
+
+                <nav class="sidebar-nav" role="navigation" aria-label="Navegação principal">
+                <a 
+                    class="nav-item active" 
+                    data-page="dashboard"
+                    aria-current="page"
+                    role="button"
+                    tabindex="0"
+                >
+                    <span class="nav-item-icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a 
+                    class="nav-item" 
+                    data-page="transacoes"
+                    role="button"
+                    tabindex="0"
+                >
+                    <span class="nav-item-icon">💳</span>
+                    <span>Transações</span>
+                </a>
+                <a 
+                    class="nav-item" 
+                    data-page="categorias"
+                    role="button"
+                    tabindex="0"
+                >
+                    <span class="nav-item-icon">🏷️</span>
+                    <span>Categorias</span>
+                </a>
+                <a 
+                    class="nav-item" 
+                    data-page="orcamento"
+                    role="button"
+                    tabindex="0"
+                >
+                    <span class="nav-item-icon">💰</span>
+                    <span>Orçamento</span>
+                </a>
+                <a 
+                    class="nav-item" 
+                    data-page="metas"
+                    role="button"
+                    tabindex="0"
+                >
+                    <span class="nav-item-icon">🎯</span>
+                    <span>Metas</span>
+                </a>
+                <a 
+                    class="nav-item" 
+                    data-page="relatorios"
+                    role="button"
+                    tabindex="0"
+                >
+                    <span class="nav-item-icon">📈</span>
+                    <span>Relatórios</span>
+                </a>
+                <a 
+                    class="nav-item" 
+                    data-page="recorrencias"
+                    role="button"
+                    tabindex="0"
+                >
+                    <span class="nav-item-icon">🔄</span>
+                    <span>Recorrências</span>
+                </a>
+                <a 
+                    class="nav-item" 
+                    data-page="contas"
+                    role="button"
+                    tabindex="0"
+                >
+                    <span class="nav-item-icon">💼</span>
+                    <span>Contas</span>
+                </a>
+                <a 
+                    class="nav-item" 
+                    data-page="etiquetas"
+                    role="button"
+                    tabindex="0"
+                >
+                    <span class="nav-item-icon">🏷️</span>
+                    <span>Etiquetas</span>
+                </a>
+                <a 
+                    class="nav-item" 
+                    data-page="alertas"
+                    role="button"
+                    tabindex="0"
+                >
+                    <span class="nav-item-icon">🔔</span>
+                    <span>Alertas</span>
+                </a>
+                <a 
+                    class="nav-item" 
+                    data-page="historico"
+                    role="button"
+                    tabindex="0"
+                >
+                    <span class="nav-item-icon">📜</span>
+                    <span>Histórico</span>
+                </a>
+                <a 
+                    class="nav-item" 
+                    data-page="configuracoes"
+                    role="button"
+                    tabindex="0"
+                >
+                    <span class="nav-item-icon">⚙️</span>
+                    <span>Configurações</span>
+                </a>
+                </nav>
+
+                <div class="sidebar-footer">
+                    <div class="user-profile">
+                        <div class="user-avatar" id="usuario-inicial"></div>
+                        <div class="user-info">
+                            <div class="user-name" id="usuario-logado"></div>
+                            <div class="user-email">Usuário</div>
+                        </div>
+                    </div>
+                    <button 
+                        class="logout-btn" 
+                        id="logout"
+                        aria-label="Sair da aplicação"
+                    >
+                        Sair
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Conteúdo Principal -->
+        <main class="main-content" role="main">
+            <header class="main-header">
+                <button 
+                    class="menu-toggle" 
+                    id="menu-toggle"
+                    aria-label="Abrir menu"
+                    aria-expanded="false"
+                    title="Menu"
+                >
+                    ☰
+                </button>
+                <h1 class="page-title" id="current-page-title">Dashboard</h1>
+                <div class="header-actions">
+                    <button 
+                        class="search-trigger" 
+                        id="global-search-trigger"
+                        aria-label="Buscar (Ctrl+K)"
+                        title="Buscar (Ctrl+K)"
+                    >
+                        🔍
+                    </button>
+                    <button 
+                        class="theme-toggle" 
+                        id="theme-toggle"
+                        aria-label="Alternar tema"
+                        title="Alternar tema"
+                    >
+                        🌙
+                    </button>
+                </div>
+            </header>
+
+            <div class="content-area">
+            <!-- Dashboard -->
+            <section 
+                id="page-dashboard" 
+                class="page visible" 
+                aria-labelledby="dashboard-title"
+                role="region"
+            >
+
+                <div class="dashboard-grid" role="group" aria-label="Estatísticas do dashboard">
+                    <article class="stat-card danger" aria-label="Gastos do mês" data-tooltip="Total de gastos registrados no mês atual">
+                        <div class="stat-label">
+                            Gastos do Mês
+                            <span class="tooltip-trigger">
+                                <span class="tooltip-icon">?</span>
+                                <span class="tooltip-content">Total de gastos registrados no mês atual</span>
+                            </span>
+                        </div>
+                        <div id="gastos-mes" class="stat-value" aria-live="polite">R$ 0,00</div>
+                        <div id="gastos-trend" class="stat-trend" aria-live="polite"></div>
+                    </article>
+
+                    <article class="stat-card success" aria-label="Receitas do mês" data-tooltip="Total de receitas registradas no mês atual">
+                        <div class="stat-label">
+                            Receitas do Mês
+                            <span class="tooltip-trigger">
+                                <span class="tooltip-icon">?</span>
+                                <span class="tooltip-content">Total de receitas registradas no mês atual</span>
+                            </span>
+                        </div>
+                        <div id="receitas-mes" class="stat-value" aria-live="polite">R$ 0,00</div>
+                        <div id="receitas-trend" class="stat-trend" aria-live="polite"></div>
+                    </article>
+
+                    <article class="stat-card" id="saldo-card" aria-label="Saldo">
+                        <div class="stat-label">Saldo</div>
+                        <div id="saldo-mes" class="stat-value" aria-live="polite">R$ 0,00</div>
+                        <div id="saldo-info" class="stat-trend" aria-live="polite"></div>
+                    </article>
+
+                    <article class="stat-card" id="stats-card" aria-label="Estatísticas adicionais">
+                        <div class="stat-label">Estatísticas</div>
+                        <div id="stats-content" class="stat-trend" aria-live="polite">
+                            <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 8px;">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span>Total de transações:</span>
+                                    <strong id="total-transacoes">0</strong>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span>Média diária:</span>
+                                    <strong id="media-diaria">R$ 0,00</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Insights Automáticos -->
+                <div id="insights-container" class="insights-card" style="display: none;">
+                    <div class="insights-header">
+                        <h3>💡 Insights Inteligentes</h3>
+                        <span class="tooltip-trigger">
+                            <span class="tooltip-icon">?</span>
+                            <span class="tooltip-content">Análises automáticas baseadas nos seus dados financeiros</span>
+                        </span>
+                    </div>
+                    <div id="insights-list"></div>
+                </div>
+
+                <div class="charts-grid" role="group" aria-label="Gráficos">
+                    <article class="chart-card" aria-label="Gráfico de gastos vs receitas">
+                        <h2 class="chart-title">
+                            Gastos vs Receitas
+                            <span class="tooltip-trigger">
+                                <span class="tooltip-icon">?</span>
+                                <span class="tooltip-content">Comparação entre gastos e receitas do mês atual</span>
+                            </span>
+                        </h2>
+                        <div class="chart-wrapper">
+                            <canvas id="chart-gastos" role="img" aria-label="Gráfico comparativo de gastos e receitas"></canvas>
+                        </div>
+                    </article>
+
+                    <article class="chart-card" aria-label="Gráfico de gastos por categoria">
+                        <h2 class="chart-title">Gastos por Categoria</h2>
+                        <div class="chart-wrapper">
+                            <canvas id="chart-categorias" role="img" aria-label="Gráfico de gastos por categoria"></canvas>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="charts-grid" role="group" aria-label="Análises adicionais">
+                    <article class="chart-card" aria-label="Evolução mensal">
+                        <h2 class="chart-title">Evolução Mensal</h2>
+                        <div class="chart-wrapper">
+                            <canvas id="chart-evolucao" role="img" aria-label="Gráfico de evolução mensal"></canvas>
+                        </div>
+                    </article>
+
+                    <article class="chart-card" aria-label="Últimas transações">
+                        <h2 class="chart-title">Últimas Transações</h2>
+                        <div id="dashboard-transacoes" class="dashboard-transactions" role="list" aria-label="Lista de últimas transações"></div>
+                    </article>
+                </div>
+            </section>
+
+            <!-- Transações -->
+            <section 
+                id="page-transacoes" 
+                class="page" 
+                aria-labelledby="transacoes-title"
+                role="region"
+                aria-hidden="true"
+            >
+                <!-- Conteúdo será renderizado via JavaScript -->
+            </section>
+
+            <!-- Categorias -->
+            <section 
+                id="page-categorias" 
+                class="page" 
+                aria-labelledby="categorias-title"
+                role="region"
+                aria-hidden="true"
+            >
+                <!-- Conteúdo será renderizado via JavaScript -->
+            </section>
+
+            <!-- Orçamento -->
+            <section 
+                id="page-orcamento" 
+                class="page" 
+                aria-labelledby="orcamento-title"
+                role="region"
+                aria-hidden="true"
+            >
+                <!-- Conteúdo será renderizado via JavaScript -->
+            </section>
+
+            <!-- Metas -->
+            <section 
+                id="page-metas" 
+                class="page" 
+                aria-labelledby="metas-title"
+                role="region"
+                aria-hidden="true"
+            >
+                <!-- Conteúdo será renderizado via JavaScript -->
+            </section>
+
+            <!-- Relatórios -->
+            <section 
+                id="page-relatorios" 
+                class="page" 
+                aria-labelledby="relatorios-title"
+                role="region"
+                aria-hidden="true"
+            >
+                <!-- Conteúdo será renderizado via JavaScript -->
+            </section>
+
+            <!-- Recorrências -->
+            <section 
+                id="page-recorrencias" 
+                class="page" 
+                role="region"
+                aria-hidden="true"
+            >
+                <!-- Conteúdo será renderizado via JavaScript -->
+            </section>
+
+            <!-- Contas -->
+            <section 
+                id="page-contas" 
+                class="page" 
+                role="region"
+                aria-hidden="true"
+            >
+                <!-- Conteúdo será renderizado via JavaScript -->
+            </section>
+
+            <!-- Etiquetas -->
+            <section 
+                id="page-etiquetas" 
+                class="page" 
+                role="region"
+                aria-hidden="true"
+            >
+                <!-- Conteúdo será renderizado via JavaScript -->
+            </section>
+
+            <!-- Alertas -->
+            <section 
+                id="page-alertas" 
+                class="page" 
+                role="region"
+                aria-hidden="true"
+            >
+                <!-- Conteúdo será renderizado via JavaScript -->
+            </section>
+
+            <!-- Histórico -->
+            <section 
+                id="page-historico" 
+                class="page" 
+                role="region"
+                aria-hidden="true"
+            >
+                <!-- Conteúdo será renderizado via JavaScript -->
+            </section>
+
+            <!-- Configurações -->
+            <section 
+                id="page-configuracoes" 
+                class="page" 
+                role="region"
+                aria-hidden="true"
+            >
+                <!-- Conteúdo será renderizado via JavaScript -->
+            </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Container de Notificações Toast -->
+    <div id="toast-container" class="toast-container" role="status" aria-live="polite" aria-atomic="true"></div>
+
+    <!-- Modal de Busca Global -->
+    <div id="global-search-modal" class="global-search-modal" aria-hidden="true">
+        <div class="global-search-backdrop" onclick="if(typeof UI !== 'undefined') UI.closeGlobalSearch()"></div>
+        <div class="global-search-box">
+            <input 
+                type="text" 
+                id="global-search-input" 
+                class="global-search-input" 
+                placeholder="Buscar transações, categorias, metas... (Ctrl+K)"
+                autocomplete="off"
+            >
+            <div id="global-search-results" class="global-search-results"></div>
+        </div>
+    </div>
+
+    <!-- Scripts Modulares -->
+    <script src="storage.js"></script>
+    <script src="auth.js"></script>
+    <script src="transactions.js"></script>
+    <script src="categories.js"></script>
+    <script src="budget.js"></script>
+    <script src="goals.js"></script>
+    <script src="notifications.js"></script>
+    <script src="reports.js"></script>
+    <script src="recurrences.js"></script>
+    <script src="tags.js"></script>
+    <script src="accounts.js"></script>
+    <script src="alerts.js"></script>
+    <script src="api.js"></script>
+    <script src="saved-filters.js"></script>
+    <script src="pdf-export.js"></script>
+    <script src="charts.js"></script>
+    <script src="onboarding.js"></script>
+    <script src="insights.js"></script>
+    <script src="advanced-features.js"></script>
+    <script src="ui.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // Registrar Service Worker para PWA (apenas em HTTP/HTTPS, não em file://)
+        if ('serviceWorker' in navigator && (location.protocol === 'http:' || location.protocol === 'https:')) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(reg => console.log('Service Worker registrado com sucesso'))
+                    .catch(err => {
+                        // Ignorar erros de Service Worker em desenvolvimento
+                        if (location.protocol !== 'file:') {
+                            console.warn('Service Worker não pôde ser registrado:', err.message);
+                        }
+                    });
+            });
+        }
+    </script>
+</body>
+</html>

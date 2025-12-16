@@ -1,0 +1,40 @@
+========================================
+  FinanceFlow - Como Iniciar o Servidor
+========================================
+
+PROBLEMA IDENTIFICADO:
+----------------------
+Você está abrindo o arquivo index.html diretamente do sistema de arquivos,
+o que causa erros de CORS e impede que os arquivos JavaScript sejam carregados.
+
+SOLUÇÃO:
+--------
+Você PRECISA usar um servidor HTTP local para executar a aplicação.
+
+OPÇÃO 1 - Usar o Script Batch (MAIS FÁCIL):
+--------------------------------------------
+1. Dê um duplo clique no arquivo: INICIAR-SERVIDOR.bat
+2. Aguarde a mensagem "Servidor iniciado!"
+3. Abra seu navegador e acesse: http://localhost:8000
+4. Pressione Ctrl+C no terminal para parar o servidor quando terminar
+
+OPÇÃO 2 - Usar o NPM:
+---------------------
+1. Abra o terminal/prompt de comando nesta pasta
+2. Execute: npm run serve
+3. Abra seu navegador e acesse: http://localhost:8000
+
+OPÇÃO 3 - Se tiver Python instalado:
+-------------------------------------
+1. Abra o terminal/prompt de comando nesta pasta
+2. Execute: python -m http.server 8000
+   (ou: python -m SimpleHTTPServer 8000 para Python 2)
+3. Abra seu navegador e acesse: http://localhost:8000
+
+IMPORTANTE:
+-----------
+- NÃO abra o arquivo index.html diretamente (duplo clique)
+- SEMPRE use um servidor HTTP (http://localhost:8000)
+- Isso resolve os erros de CORS e permite que todos os arquivos sejam carregados
+
+========================================
