@@ -6,3 +6,4 @@ const Notifications = {
     // Funcionalidades de notificações podem ser implementadas aqui
 };
 
+

@@ -2,7 +2,7 @@
 // APP INITIALIZATION
 // ======================================================
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     const loginForm = document.getElementById("login-form");
     const forgotForm = document.getElementById("forgot-form");
     const app = document.getElementById("app-wrapper");
@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Registrar (criar conta explicitamente)
     if (registerBtn) {
-        registerBtn.addEventListener('click', () => {
+        registerBtn.addEventListener('click', async () => {
             if (!userInput || !passInput) return;
             const user = userInput.value.trim();
             const pass = passInput.value.trim();
@@ -68,14 +68,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            const reg = Auth.register(user, pass);
+            const reg = await Auth.register(user, pass);
             if (!reg || !reg.success) {
                 alert(reg?.message || 'Erro ao registrar.');
                 return;
             }
 
             // Após registrar, faz login normal (persistente)
-            const result = Auth.login(user, pass, { persist: true });
+            const result = await Auth.login(user, pass, { persist: true });
             if (result?.success) {
                 if (loginWrapper) {
                     loginWrapper.style.display = "none";
@@ -103,7 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Submeter redefinição de senha
     if (forgotForm) {
-        forgotForm.addEventListener('submit', (e) => {
+        forgotForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const u = (forgotUsername?.value || '').trim();
             const p1 = (forgotNewPass?.value || '').trim();
@@ -114,6 +114,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 forgotUsername?.focus?.();
                 return;
             }
+            // Firebase: fluxo padrão é enviar e-mail de redefinição
+            if (window.FirebaseClient && FirebaseClient.isConfigured && FirebaseClient.isConfigured()) {
+                const res = await Auth.sendPasswordReset(u);
+                if (res?.success) {
+                    alert('Link de redefinição enviado (Firebase). Verifique seu e-mail.');
+                    showLogin();
+                } else {
+                    alert(res?.message || 'Não foi possível enviar o e-mail.');
+                }
+                return;
+            }
+
+            // Local: redefine diretamente
             if (!p1 || p1.length < 4) {
                 alert('A nova senha deve ter pelo menos 4 caracteres.');
                 forgotNewPass?.focus?.();
@@ -128,7 +141,6 @@ document.addEventListener("DOMContentLoaded", () => {
             const res = Auth.resetPassword(u, p1);
             if (res?.success) {
                 alert('Senha redefinida! Faça login com a nova senha.');
-                // Pré-preenche no login
                 if (userInput) userInput.value = u;
                 if (passInput) passInput.value = '';
                 if (forgotNewPass) forgotNewPass.value = '';
@@ -141,7 +153,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Verificar se já está logado
-    const checkAuth = () => {
+    const checkAuth = async () => {
+        if (Auth.bootstrap) {
+            await Auth.bootstrap();
+        }
         const current = Auth.current();
         if (current) {
             if (loginWrapper) {
@@ -181,10 +196,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
     
-    checkAuth();
+    await checkAuth();
 
     if (loginForm) {
-        loginForm.addEventListener("submit", (e) => {
+        loginForm.addEventListener("submit", async (e) => {
             e.preventDefault();
 
             if (!userInput || !passInput) {
@@ -216,7 +231,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             try {
                 // Tentar login
-                const result = Auth.login(user, pass, { persist: true });
+                const result = await Auth.login(user, pass, { persist: true });
 
                 if (result && result.success) {
                     // Esconder login, mostrar app
