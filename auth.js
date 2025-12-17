@@ -48,7 +48,7 @@ const Auth = {
         return { success: true };
     },
 
-    login(username, password) {
+    login(username, password, options = {}) {
         // Usar localStorage diretamente
         const users = Storage.getUsers();
 
@@ -62,9 +62,22 @@ const Auth = {
 
         users[username].profile.lastLogin = new Date().toISOString();
         Storage.saveUsers(users);
-        Storage.setCurrentUser(username);
+        Storage.setCurrentUser(username, options.persist !== false);
 
         return { success: true, user: users[username] };
+    },
+
+    resetPassword(username, newPassword) {
+        const users = Storage.getUsers();
+        if (!users[username]) {
+            return { success: false, message: "Usuário não existe" };
+        }
+        if (!newPassword || String(newPassword).trim().length < 4) {
+            return { success: false, message: "Senha deve ter pelo menos 4 caracteres" };
+        }
+        users[username].password = String(newPassword).trim();
+        Storage.saveUsers(users);
+        return { success: true };
     },
 
     logout() {

@@ -230,6 +230,77 @@ html {
     font-family: inherit;
 }
 
+.login-pass-row{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.login-pass-toggle{
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border-radius: var(--radius-lg);
+    flex: 0 0 auto;
+}
+
+.login-forgot{
+    margin-top: 8px;
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: var(--primary);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: left;
+}
+
+.login-forgot:hover{
+    text-decoration: underline;
+}
+
+.forgot-form{
+    margin-top: 4px;
+}
+
+.forgot-title{
+    margin: 0 0 6px;
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text-primary);
+}
+
+.forgot-subtitle{
+    margin: 0 0 18px;
+    color: var(--text-secondary);
+    font-size: 13px;
+    line-height: 1.35;
+}
+
+.login-actions-row{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+@media (max-width: 420px){
+    .login-actions-row{
+        grid-template-columns: 1fr;
+    }
+}
+
+.login-help{
+    margin-top: 10px;
+    font-size: 12.5px;
+    color: var(--text-tertiary);
+    line-height: 1.35;
+}
+
 .login-box .form-input:focus {
     outline: none;
     border-color: var(--primary);

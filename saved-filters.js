@@ -44,3 +44,4 @@ const SavedFilters = {
         return filter ? filter.filters : null;
     }
 };
+

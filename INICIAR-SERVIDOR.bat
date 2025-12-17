@@ -33,3 +33,4 @@ echo Pressione Ctrl+C para parar o servidor
 echo.
 
 node servidor-local.js
+

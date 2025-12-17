@@ -59,3 +59,4 @@ const Insights = {
         return insights;
     }
 };
+
