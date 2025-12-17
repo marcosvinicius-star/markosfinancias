@@ -1,0 +1,27 @@
+{
+  "hosting": {
+    "site": "financeflow-eda21",
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      ".firebaserc",
+      "**/node_modules/**",
+      "**/.git/**",
+      "**/.cursor/**",
+      "**/.vscode/**",
+      "**/package-lock.json",
+      "**/*.log"
+    ],
+    "headers": [
+      {
+        "source": "**/*.@(js|css|html|json)",
+        "headers": [
+          { "key": "Cache-Control", "value": "no-cache" }
+        ]
+      }
+    ],
+    "rewrites": [
+      { "source": "**", "destination": "/index.html" }
+    ]
+  }
+}
